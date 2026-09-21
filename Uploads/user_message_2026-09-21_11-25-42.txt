@@ -1,0 +1,1309 @@
+PROMPT MESTRE — APLICATIVO DE MODA COM IA
+MÉTODO IDEAL
+
+Quero que você atue como uma equipe completa formada por:
+
+- especialista em desenvolvimento de aplicativos;
+- desenvolvedor full-stack;
+- engenheiro de inteligência artificial;
+- especialista em visão computacional;
+- designer UX/UI;
+- arquiteto de software;
+- especialista em produto;
+- especialista em segurança e privacidade.
+
+Quero criar um aplicativo de moda pessoal baseado em inteligência artificial.
+
+Use o método IDEAL para estruturar e desenvolver o projeto.
+
+==================================================
+I — INTENÇÃO
+==================================================
+
+Criar um aplicativo de moda inteligente que funcione como um personal stylist digital.
+
+O usuário poderá fotografar suas próprias roupas, fotografar um look que está usando e receber análises e sugestões personalizadas.
+
+A IA deverá entender:
+
+- roupas;
+- cores;
+- padrões;
+- estilos;
+- combinações;
+- ocasiões;
+- clima;
+- preferências do usuário;
+- tendências de moda.
+
+O principal diferencial é que o aplicativo deverá priorizar as roupas que o usuário já possui.
+
+A IA deverá aprender progressivamente com as escolhas do usuário para deixar as recomendações cada vez mais personalizadas.
+
+O aplicativo também deverá possuir um "Radar de Moda", capaz de acompanhar sinais de tendências e relacioná-los com o guarda-roupa e o estilo do usuário.
+
+Não quero apenas uma apresentação conceitual.
+
+Quero que você projete e, quando o ambiente permitir, construa o aplicativo de forma funcional, com arquitetura, interface, banco de dados, backend, frontend e integração com IA.
+
+==================================================
+D — DETALHES
+==================================================
+
+1. FOTO DO LOOK
+==================================================
+
+O usuário poderá tirar uma foto de si mesmo usando uma roupa.
+
+A IA deverá analisar a imagem e identificar, quando possível:
+
+- peças utilizadas;
+- cores;
+- padrões;
+- estilo;
+- combinação entre as peças;
+- calçados;
+- acessórios;
+- possíveis pontos de melhoria.
+
+A resposta não deverá ser apenas:
+
+"Combina."
+
+A IA deverá explicar de forma simples:
+
+- o que está funcionando;
+- quais cores estão funcionando;
+- quais peças estão combinando;
+- o que poderia ser melhorado;
+- quais alternativas o usuário possui no próprio guarda-roupa.
+
+A análise deve ser objetiva, útil e fácil de entender.
+
+
+2. GUARDA-ROUPA DIGITAL
+==================================================
+
+Criar um guarda-roupa digital.
+
+O usuário poderá fotografar suas roupas individualmente.
+
+A IA deverá analisar cada foto e identificar automaticamente:
+
+- categoria;
+- tipo de peça;
+- cor;
+- padrão;
+- estilo;
+- características relevantes.
+
+Organizar automaticamente as peças em categorias como:
+
+- camisetas;
+- camisas;
+- calças;
+- bermudas;
+- shorts;
+- jaquetas;
+- casacos;
+- moletons;
+- tênis;
+- sapatos;
+- botas;
+- acessórios;
+- outras categorias necessárias.
+
+O usuário poderá editar manualmente as informações caso a IA erre.
+
+Permitir filtros por:
+
+- categoria;
+- cor;
+- estilo;
+- ocasião;
+- estação;
+- preferência.
+
+
+3. MONTE MEU LOOK
+==================================================
+
+Criar uma função central chamada:
+
+"MONTE MEU LOOK"
+
+O usuário escolhe uma peça do guarda-roupa e a IA sugere outras peças que combinam com ela.
+
+Exemplo:
+
+Usuário escolhe:
+
+"Camiseta preta."
+
+A IA pode sugerir:
+
+Look 1:
+Camiseta preta + calça jeans + tênis branco.
+
+Look 2:
+Camiseta preta + calça cargo + tênis.
+
+Look 3:
+Camiseta preta + bermuda + tênis.
+
+Gerar aproximadamente 3 a 5 combinações diferentes.
+
+Cada combinação deve explicar brevemente:
+
+- por que funciona;
+- combinação de cores;
+- estilo;
+- ocasião adequada.
+
+Priorizar sempre as peças que o usuário já possui.
+
+
+4. COMBINAÇÃO DE CORES
+==================================================
+
+A IA deverá analisar:
+
+- cores;
+- contraste;
+- tons neutros;
+- tons complementares;
+- combinações de cores;
+- equilíbrio visual.
+
+Também deverá sugerir:
+
+- roupas;
+- calçados;
+- acessórios;
+- cores alternativas.
+
+A análise deve considerar o look completo e não somente uma peça.
+
+
+5. OCASIÕES
+==================================================
+
+O usuário poderá selecionar uma ocasião:
+
+- casual;
+- trabalho;
+- festa;
+- encontro;
+- academia;
+- passeio;
+- evento;
+- viagem;
+- jantar;
+- outras.
+
+Também deverá existir um campo para o usuário escrever uma ocasião personalizada.
+
+Exemplo:
+
+"Vou sair para jantar sábado à noite."
+
+A IA deverá montar sugestões adequadas utilizando principalmente as peças disponíveis no guarda-roupa.
+
+
+6. CLIMA
+==================================================
+
+Quando houver integração com dados climáticos disponíveis, utilizar:
+
+- temperatura;
+- chuva;
+- condições climáticas;
+- sensação térmica;
+- outros dados relevantes.
+
+Exemplo:
+
+Se estiver frio:
+priorizar roupas mais quentes.
+
+Se estiver calor:
+priorizar roupas leves.
+
+Se houver chuva:
+considerar roupas e calçados adequados.
+
+Mostrar claramente quando a recomendação estiver utilizando dados climáticos.
+
+
+7. PERFIL DE ESTILO
+==================================================
+
+Criar um perfil de estilo personalizado.
+
+A IA poderá identificar preferências como:
+
+- casual;
+- streetwear;
+- esportivo;
+- elegante;
+- social;
+- minimalista;
+- moderno;
+- clássico;
+- outros.
+
+O usuário também poderá selecionar ou alterar suas preferências manualmente.
+
+Não presumir características pessoais que não possam ser identificadas de maneira confiável.
+
+
+8. IA QUE APRENDE AS PREFERÊNCIAS
+==================================================
+
+Cada sugestão poderá receber:
+
+👍 Gostei
+
+👎 Não gostei
+
+A IA deverá utilizar essas interações para entender melhor as preferências do usuário.
+
+Exemplo:
+
+Se o usuário frequentemente gostar de looks casuais e rejeitar looks formais, o sistema poderá priorizar sugestões casuais.
+
+O aprendizado deverá ser gradual.
+
+Não transformar uma única avaliação em uma preferência permanente.
+
+Permitir que o usuário visualize e altere suas preferências.
+
+
+9. TENHO UMA OCASIÃO
+==================================================
+
+Criar uma função chamada:
+
+"TENHO UMA OCASIÃO"
+
+O usuário informa algo como:
+
+"Tenho um encontro sábado à noite."
+
+A IA deverá considerar:
+
+- ocasião;
+- horário;
+- clima;
+- preferências;
+- estilo;
+- peças disponíveis.
+
+Depois deverá gerar algumas opções utilizando o guarda-roupa do usuário.
+
+
+10. VISUALIZAÇÃO DO LOOK
+==================================================
+
+Criar uma função para gerar uma prévia visual da combinação.
+
+A visualização deverá servir como referência de como as peças podem ficar juntas.
+
+Preservar, quando possível e tecnicamente viável, as características das peças reais cadastradas pelo usuário.
+
+Não alterar indevidamente a aparência do usuário.
+
+Deixar claro que a imagem é uma visualização gerada por IA.
+
+
+11. FAVORITOS
+==================================================
+
+Permitir salvar looks favoritos.
+
+Criar uma área:
+
+"MEUS FAVORITOS"
+
+Mostrar:
+
+- imagem;
+- peças utilizadas;
+- ocasião;
+- estilo;
+- data.
+
+Permitir remover e organizar favoritos.
+
+
+12. HISTÓRICO
+==================================================
+
+Criar histórico de:
+
+- looks analisados;
+- combinações geradas;
+- looks favoritos;
+- avaliações 👍/👎.
+
+
+13. ECONOMIA
+==================================================
+
+O aplicativo deve priorizar o uso das roupas que o usuário já possui.
+
+Não transformar o aplicativo em uma plataforma de vendas.
+
+Caso o usuário queira descobrir o que está faltando no guarda-roupa, criar uma função separada:
+
+"PEÇAS QUE PODEM COMPLEMENTAR SEU GUARDA-ROUPA"
+
+Essa função deverá mostrar quais tipos de peças poderiam aumentar as possibilidades de combinação.
+
+Não obrigar o usuário a comprar nada.
+
+
+14. GUARDA-ROUPA INTELIGENTE
+==================================================
+
+A IA deverá organizar automaticamente as peças cadastradas.
+
+Permitir pesquisa e filtros.
+
+Exemplos:
+
+"Mostrar meus tênis pretos."
+
+"Mostrar minhas roupas para frio."
+
+"Mostrar minhas peças casuais."
+
+"Mostrar roupas que combinam com esta camiseta."
+
+
+15. RADAR DE MODA
+==================================================
+
+Criar uma função chamada:
+
+"RADAR DE MODA"
+
+O Radar deverá acompanhar sinais de tendências utilizando fontes públicas e autorizadas, APIs oficiais, plataformas de tendências, varejistas, redes sociais e outras fontes que possam ser acessadas legalmente.
+
+Não inventar dados.
+
+Não fingir acesso a uma plataforma caso não exista integração disponível.
+
+O sistema deverá identificar sinais de evolução das tendências.
+
+Categorias possíveis:
+
+- roupas;
+- cores;
+- estampas;
+- calçados;
+- acessórios;
+- estilos;
+- peças específicas;
+- combinações.
+
+Cada tendência poderá receber um status:
+
+🔥 TENDÊNCIA CRESCENDO
+
+Indica aumento nos sinais de interesse observados.
+
+🟢 TENDÊNCIA CONSOLIDADA
+
+Indica sinais fortes e consistentes de interesse.
+
+🟡 TENDÊNCIA ESTÁVEL
+
+Indica interesse relativamente estável.
+
+🔴 TENDÊNCIA PERDENDO FORÇA
+
+Indica redução nos sinais observados.
+
+Esses status devem ser baseados em dados disponíveis.
+
+Não inventar porcentagens ou estatísticas.
+
+Mostrar:
+
+- nome da tendência;
+- categoria;
+- imagem quando disponível;
+- status;
+- evolução ao longo do tempo;
+- período analisado;
+- fontes utilizadas;
+- data da última atualização;
+- explicação simples.
+
+Se diferentes fontes apresentarem sinais diferentes, mostrar essa divergência.
+
+Não esconder incertezas.
+
+
+16. ESTÁ EM ALTA + COMBINA COMIGO?
+==================================================
+
+Criar uma função integrada chamada:
+
+"ESTÁ EM ALTA + COMBINA COMIGO?"
+
+Essa função deverá cruzar:
+
+RADAR DE MODA
++
+GUARDA-ROUPA
++
+PERFIL DE ESTILO
++
+PREFERÊNCIAS DO USUÁRIO.
+
+Exemplo:
+
+🔥 Jaqueta oversized
+
+Tendência:
+Crescendo
+
+O usuário possui:
+2 peças semelhantes.
+
+A IA poderá informar:
+
+"Você já possui peças relacionadas a esta tendência."
+
+Depois poderá sugerir combinações utilizando essas peças.
+
+
+17. TENDÊNCIAS QUE COMBINAM COM MEU GUARDA-ROUPA
+==================================================
+
+Criar uma área chamada:
+
+"TENDÊNCIAS QUE COMBINAM COM SEU GUARDA-ROUPA"
+
+A IA deverá encontrar tendências atuais relacionadas às peças que o usuário já possui.
+
+Exemplo:
+
+O usuário possui:
+
+- calça cargo;
+- camiseta oversized;
+- tênis casual.
+
+O Radar poderá encontrar tendências relacionadas e sugerir formas de utilizar essas peças.
+
+O objetivo é permitir que o usuário acompanhe tendências sem precisar renovar todo o guarda-roupa.
+
+
+18. FILTROS DO RADAR
+==================================================
+
+Permitir filtrar tendências por:
+
+- categoria;
+- estilo;
+- período;
+- crescendo;
+- consolidada;
+- estável;
+- perdendo força.
+
+Criar gráficos e indicadores visuais quando houver dados suficientes.
+
+
+19. ATUALIZAÇÃO DO RADAR
+==================================================
+
+Criar arquitetura que permita atualização periódica dos dados.
+
+A frequência deverá respeitar:
+
+- disponibilidade da fonte;
+- APIs;
+- limites de uso;
+- permissões;
+- custos.
+
+Mostrar:
+
+"Última atualização: ..."
+
+
+20. FONTES E CONFIABILIDADE
+==================================================
+
+Toda tendência deverá possuir rastreabilidade.
+
+Quando possível, mostrar as fontes utilizadas.
+
+Não inventar dados.
+
+Não inventar integrações.
+
+Se uma determinada fonte não puder ser acessada oficialmente, procurar uma alternativa legítima ou informar que a integração não está disponível.
+
+==================================================
+IDENTIDADE VISUAL E DESIGN PREMIUM
+==================================================
+
+O aplicativo deve possuir aparência de uma marca de moda premium, sofisticada, moderna e tecnológica.
+
+A interface deve transmitir:
+
+- elegância;
+- exclusividade;
+- minimalismo;
+- tecnologia;
+- confiança;
+- sofisticação;
+- sensação de produto premium.
+
+Evite uma aparência genérica de aplicativo de IA.
+
+O aplicativo deve parecer um verdadeiro produto profissional de moda.
+
+--------------------------------------------------
+PALETA DE CORES
+--------------------------------------------------
+
+Utilizar como paleta principal:
+
+PRETO PRINCIPAL:
+#111111
+
+OFF-WHITE / FUNDO:
+#F7F5F2
+
+CHAMPAGNE / DOURADO:
+#C8A96B
+
+TEXTO PRINCIPAL:
+#171717
+
+TEXTO SECUNDÁRIO:
+#77736D
+
+BRANCO DOS CARDS:
+#FFFFFF
+
+Utilizar o PRETO para:
+
+- botões principais;
+- navegação;
+- títulos importantes;
+- ações principais;
+- elementos de destaque.
+
+Utilizar o OFF-WHITE como:
+
+- fundo principal;
+- páginas internas;
+- áreas de conteúdo.
+
+Utilizar o CHAMPAGNE/DOURADO de forma elegante e moderada:
+
+- pequenos detalhes;
+- ícones selecionados;
+- indicadores;
+- bordas especiais;
+- elementos premium;
+- detalhes do Radar de Moda;
+- estados selecionados.
+
+NÃO utilizar dourado em excesso.
+
+O dourado deve funcionar como uma cor de destaque sofisticada, e não como a cor dominante da interface.
+
+--------------------------------------------------
+ESTILO VISUAL
+--------------------------------------------------
+
+Utilizar:
+
+- bastante espaço em branco;
+- layouts limpos;
+- imagens grandes;
+- bordas discretamente arredondadas;
+- sombras suaves;
+- tipografia elegante;
+- hierarquia visual clara;
+- animações sutis;
+- transições suaves;
+- ícones minimalistas.
+
+Evitar:
+
+- excesso de cores;
+- gradientes exagerados;
+- sombras pesadas;
+- excesso de elementos;
+- botões gigantes sem necessidade;
+- aparência infantil;
+- aparência excessivamente futurista;
+- excesso de elementos dourados.
+
+A interface deve transmitir a sensação de uma revista de moda premium combinada com tecnologia de inteligência artificial.
+
+--------------------------------------------------
+TIPOGRAFIA
+--------------------------------------------------
+
+Utilizar uma tipografia elegante e sofisticada para títulos.
+
+Para textos, menus e informações secundárias, utilizar uma fonte extremamente legível e moderna.
+
+Criar uma hierarquia clara entre:
+
+- títulos;
+- subtítulos;
+- textos;
+- informações secundárias;
+- botões;
+- indicadores.
+
+Os títulos podem ter aparência editorial de revista de moda.
+
+--------------------------------------------------
+TELA INICIAL
+--------------------------------------------------
+
+Criar uma tela inicial minimalista.
+
+Fundo:
+
+#F7F5F2
+
+Logo centralizada.
+
+Nome do aplicativo em preto.
+
+Utilizar uma pequena quantidade de champagne em detalhes da marca.
+
+Adicionar uma frase curta e sofisticada.
+
+Exemplo:
+
+"Seu estilo. Sua inteligência."
+
+Botão principal:
+
+FUNDO PRETO #111111
+TEXTO BRANCO
+
+Texto:
+
+"Começar"
+
+--------------------------------------------------
+HOME
+--------------------------------------------------
+
+Criar uma Home elegante e organizada.
+
+Estrutura sugerida:
+
+Bom dia,
+[Nome do usuário]
+
+"O que vamos criar hoje?"
+
+Depois apresentar cards principais:
+
+📸 Analisar meu look
+
+🧩 Montar meu look
+
+👕 Meu guarda-roupa
+
+🔥 Radar de Moda
+
+Os cards devem utilizar imagens e espaços amplos.
+
+Não deixar a Home visualmente carregada.
+
+--------------------------------------------------
+GUARDA-ROUPA
+--------------------------------------------------
+
+Criar uma galeria visual das roupas.
+
+As fotografias das peças devem ser o principal elemento visual.
+
+Utilizar:
+
+- cards brancos;
+- fundo off-white;
+- cantos discretamente arredondados;
+- sombras suaves;
+- filtros minimalistas.
+
+Filtros:
+
+Todas
+Camisetas
+Calças
+Tênis
+Acessórios
+Outros
+
+As roupas devem parecer organizadas como um catálogo de moda.
+
+--------------------------------------------------
+MONTE MEU LOOK
+--------------------------------------------------
+
+Essa deve ser uma das telas visualmente mais sofisticadas.
+
+Título:
+
+"Monte seu look"
+
+Mostrar a peça selecionada em destaque.
+
+Abaixo:
+
+Ocasião
+Estilo
+Clima
+
+Botão principal:
+
+"✨ Criar combinações"
+
+Utilizar animação discreta enquanto a IA estiver analisando.
+
+As combinações geradas devem aparecer em cards grandes, com fotografia em destaque e informações resumidas.
+
+--------------------------------------------------
+ANÁLISE DO LOOK
+--------------------------------------------------
+
+Mostrar a foto do usuário de forma destacada.
+
+Depois apresentar:
+
+"Análise da IA"
+
+Criar indicadores visuais simples para:
+
+Combinação
+Cores
+Estilo
+
+Depois dividir a análise em:
+
+"O que funciona"
+
+"O que pode melhorar"
+
+"Sugestão da IA"
+
+Evitar transformar a análise em uma tela cheia de textos.
+
+Priorizar informações curtas e visualmente organizadas.
+
+--------------------------------------------------
+RADAR DE MODA
+--------------------------------------------------
+
+Criar uma identidade visual diferente para o Radar.
+
+Utilizar:
+
+FUNDO PRETO #111111
+
+Textos claros.
+
+Detalhes em champagne #C8A96B.
+
+Título:
+
+"Radar de Moda"
+
+Utilizar os indicadores:
+
+🔥 Tendência crescendo
+
+🟢 Tendência consolidada
+
+🟡 Tendência estável
+
+🔴 Tendência perdendo força
+
+As tendências devem aparecer em cards elegantes, com imagens grandes.
+
+Utilizar gráficos minimalistas quando houver dados suficientes.
+
+--------------------------------------------------
+ESTÁ EM ALTA + COMBINA COMIGO?
+--------------------------------------------------
+
+Criar uma tela premium para cruzar:
+
+Radar de Moda
++
+Guarda-roupa
++
+Perfil de estilo.
+
+Exemplo:
+
+🔥 Jaqueta oversized
+
+"Tendência crescendo"
+
+"Você possui 2 peças relacionadas."
+
+"Combina com seu perfil de estilo."
+
+Depois apresentar:
+
+"Ver combinações"
+
+Utilizar champagne apenas nos elementos de destaque.
+
+--------------------------------------------------
+FAVORITOS
+--------------------------------------------------
+
+Criar uma página semelhante a um catálogo/editorial de moda.
+
+Utilizar:
+
+- fotografias grandes;
+- pouco texto;
+- bastante espaço;
+- fundo off-white;
+- cards minimalistas.
+
+Priorizar o visual das combinações.
+
+--------------------------------------------------
+NAVEGAÇÃO
+--------------------------------------------------
+
+Criar uma barra de navegação inferior simples para celular.
+
+Sugestão:
+
+🏠 Início
+
+👕 Guarda-roupa
+
+✨ Criar
+
+🔥 Radar
+
+♡ Favoritos
+
+O botão "Criar" pode receber um pequeno destaque em champagne para indicar a principal ação do aplicativo.
+
+--------------------------------------------------
+BOTÕES
+--------------------------------------------------
+
+Botões principais:
+
+Fundo:
+#111111
+
+Texto:
+#FFFFFF
+
+Cantos:
+moderadamente arredondados.
+
+Botões secundários:
+
+Fundo:
+#FFFFFF
+
+Borda:
+#D8D3CA
+
+Texto:
+#171717
+
+Estados selecionados:
+
+Utilizar champagne #C8A96B de maneira discreta.
+
+--------------------------------------------------
+CARDS
+--------------------------------------------------
+
+Os cards devem possuir:
+
+- fundo branco;
+- cantos suavemente arredondados;
+- sombra muito discreta;
+- espaçamento interno confortável.
+
+Evitar excesso de bordas.
+
+--------------------------------------------------
+ANIMAÇÕES
+--------------------------------------------------
+
+Utilizar animações suaves e rápidas.
+
+Exemplos:
+
+- fade;
+- slide;
+- zoom discreto;
+- carregamento elegante;
+- transição suave entre telas.
+
+Durante uma análise de IA, mostrar uma animação minimalista indicando que a inteligência artificial está analisando o look.
+
+Evitar animações exageradas.
+
+--------------------------------------------------
+RESPONSIVIDADE
+--------------------------------------------------
+
+O design deve ser desenvolvido primeiro pensando em celular.
+
+Também deve funcionar perfeitamente em:
+
+- smartphones;
+- tablets;
+- computadores.
+
+A interface deve se adaptar automaticamente aos diferentes tamanhos de tela.
+
+--------------------------------------------------
+REGRA PRINCIPAL DE DESIGN
+--------------------------------------------------
+
+O aplicativo deve parecer uma mistura de:
+
+MARCA DE MODA PREMIUM
++
+REVISTA DE MODA
++
+TECNOLOGIA DE IA
+
+A estética deve ser sofisticada sem parecer complicada.
+
+Menos elementos, mais espaço, imagens maiores e excelente hierarquia visual.
+
+A interface deve parecer cara, profissional e moderna sem depender de excesso de efeitos.
+
+Mantenha a paleta:
+
+#111111
+#F7F5F2
+#C8A96B
+#171717
+#77736D
+#FFFFFF
+
+como identidade visual principal em todo o aplicativo.
+
+Crie todos os componentes e telas seguindo essa identidade visual de maneira consistente.
+
+==================================================
+E — EXEMPLOS
+==================================================
+
+EXEMPLO 1 — ANÁLISE DE LOOK
+
+Usuário tira uma foto usando:
+
+camiseta preta + calça jeans + tênis branco.
+
+A IA identifica as peças e responde:
+
+"Seu look utiliza cores neutras e apresenta uma combinação equilibrada. O tênis branco cria contraste com a calça e mantém o visual casual."
+
+Depois poderá sugerir alternativas utilizando o guarda-roupa do usuário.
+
+
+EXEMPLO 2 — MONTE MEU LOOK
+
+Usuário seleciona:
+
+"Camiseta preta."
+
+A IA consulta o guarda-roupa e encontra:
+
+- calça jeans;
+- calça cargo;
+- bermuda;
+- tênis branco;
+- tênis preto.
+
+Gera diferentes combinações e explica cada uma.
+
+
+EXEMPLO 3 — TENHO UMA OCASIÃO
+
+Usuário:
+
+"Tenho um jantar sábado à noite."
+
+O sistema considera:
+
+- horário;
+- ocasião;
+- clima;
+- estilo;
+- roupas disponíveis.
+
+Depois apresenta diferentes opções.
+
+
+EXEMPLO 4 — APRENDIZADO
+
+Usuário dá 👍 em vários looks streetwear.
+
+O sistema passa a considerar essa preferência nas próximas sugestões.
+
+Se o usuário começar a dar 👎, o sistema deverá atualizar gradualmente suas recomendações.
+
+
+EXEMPLO 5 — RADAR
+
+O Radar identifica sinais de crescimento relacionados a determinada peça.
+
+Mostra:
+
+🔥 Tendência crescendo
+
+Nome:
+[Nome da tendência]
+
+Categoria:
+[Categoria]
+
+Fontes:
+[Fontes utilizadas]
+
+Última atualização:
+[Data]
+
+Depois mostra:
+
+"Você possui 3 peças que podem ser utilizadas nessa tendência."
+
+
+EXEMPLO 6 — RADAR + GUARDA-ROUPA
+
+O sistema identifica uma tendência.
+
+Em vez de simplesmente dizer:
+
+"Compre esta peça."
+
+Ele verifica primeiro o guarda-roupa.
+
+Se o usuário já possui peças adequadas, mostra:
+
+"Você já possui peças que podem ser usadas nessa tendência."
+
+E cria combinações.
+
+
+EXEMPLO 7 — TENDÊNCIA QUE NÃO COMBINA COM O PERFIL
+
+Se uma tendência não estiver alinhada às preferências conhecidas do usuário, o aplicativo poderá mostrar:
+
+"Essa tendência está apresentando sinais de crescimento, mas é diferente dos estilos que você costuma escolher."
+
+Depois poderá oferecer uma alternativa mais próxima das preferências do usuário.
+
+==================================================
+A — AÇÃO
+==================================================
+
+Quero que você transforme todo esse conceito em um projeto real.
+
+Primeiro faça uma análise completa da ideia.
+
+Depois desenvolva:
+
+1. Nome provisório do aplicativo.
+2. Conceito e posicionamento.
+3. Estrutura completa do aplicativo.
+4. Mapa de navegação.
+5. Principais telas.
+6. Fluxo de usuário.
+7. UX/UI.
+8. Design system.
+9. Arquitetura frontend.
+10. Arquitetura backend.
+11. Banco de dados.
+12. Estrutura das APIs.
+13. Sistema de autenticação.
+14. Sistema de armazenamento das imagens.
+15. Sistema de análise de imagens.
+16. Sistema de recomendação.
+17. Sistema de aprendizado das preferências.
+18. Sistema de favoritos.
+19. Sistema de histórico.
+20. Sistema de clima.
+21. Sistema de visualização de looks.
+22. Sistema do Radar de Moda.
+23. Sistema de fontes e rastreabilidade.
+24. Sistema de atualização das tendências.
+25. Segurança e privacidade.
+26. Escalabilidade.
+27. Tratamento de erros.
+28. Estados de carregamento.
+29. Sistema de notificações, se fizer sentido.
+30. Estratégia para MVP.
+
+Depois defina as tecnologias recomendadas.
+
+Para cada tecnologia escolhida, explique brevemente:
+
+- por que foi escolhida;
+- qual problema resolve;
+- alternativas possíveis.
+
+Se o ambiente permitir criação de código e arquivos, construa o projeto.
+
+Crie componentes reutilizáveis.
+
+Organize o código profissionalmente.
+
+Não crie código fictício apresentado como funcional.
+
+Quando uma API externa for necessária, identifique claramente:
+
+- API;
+- finalidade;
+- autenticação;
+- limitações;
+- custos, quando conhecidos;
+- alternativa caso não esteja disponível.
+
+Se alguma informação técnica estiver faltando, faça perguntas objetivas.
+
+Porém, não pare desnecessariamente.
+
+Quando uma decisão razoável puder ser tomada, tome a decisão, explique-a brevemente e continue.
+
+Priorize primeiro um MVP funcional.
+
+Depois estruture as funcionalidades avançadas.
+
+
+==================================================
+L — LIMITES
+==================================================
+
+O aplicativo deve ser:
+
+- moderno;
+- elegante;
+- simples;
+- intuitivo;
+- rápido;
+- responsivo;
+- pensado primeiro para celular;
+- fácil para usuários iniciantes.
+
+Não criar uma interface visualmente carregada.
+
+Não adicionar funcionalidades aleatórias que desviem do objetivo principal.
+
+A IA deve explicar suas recomendações.
+
+Não responder apenas "combina" ou "não combina".
+
+Não apresentar recomendações como verdades absolutas.
+
+Moda possui elementos subjetivos. Quando apropriado, apresentar a recomendação como uma sugestão baseada nas características observadas e nas preferências do usuário.
+
+Não presumir características pessoais que não possam ser identificadas com segurança.
+
+Preservar a privacidade das fotos.
+
+Não utilizar fotos do usuário para finalidades diferentes das informadas.
+
+O sistema deverá respeitar as permissões e políticas das fontes utilizadas pelo Radar de Moda.
+
+Não fazer scraping de plataformas quando isso violar seus termos de uso.
+
+Não inventar dados do Radar.
+
+Não inventar tendências.
+
+Não inventar estatísticas.
+
+Não inventar APIs.
+
+Não fingir que uma integração existe quando ela não existe.
+
+Quando os dados forem insuficientes, informar claramente a limitação.
+
+Priorizar o guarda-roupa existente do usuário.
+
+O objetivo não é fazer o usuário comprar mais roupas, mas ajudá-lo a utilizar melhor o que já possui.
+
+
+==================================================
+RESULTADO ESPERADO
+==================================================
+
+Quero que este projeto seja pensado como um produto real e escalável.
+
+O aplicativo deverá funcionar como um:
+
+"PERSONAL STYLIST COM IA
++
+GUARDA-ROUPA DIGITAL
++
+GERADOR DE LOOKS
++
+ANALISADOR DE ESTILO
++
+RADAR DE MODA"
+
+A experiência principal deverá ser extremamente simples:
+
+FOTOGRAFE
+↓
+A IA ENTENDE
+↓
+ORGANIZA
+↓
+ANALISA
+↓
+SUGERE
+↓
+VOCÊ AVALIA
+↓
+A IA APRENDE
+↓
+MELHORA AS PRÓXIMAS SUGESTÕES
+
+E o Radar deverá acrescentar:
+
+TENDÊNCIAS
+↓
+ANÁLISE DE DADOS
+↓
+CRUZAMENTO COM O GUARDA-ROUPA
+↓
+"ESTÁ EM ALTA + COMBINA COMIGO?"
+↓
+SUGESTÕES PERSONALIZADAS
+
+Comece agora pela arquitetura e pelo plano do MVP.
+
+Não pule diretamente para uma explicação superficial.
+
+Quero que você pense no produto inteiro antes de implementar cada parte.
+
+Se estiver em um ambiente de desenvolvimento, construa primeiro uma versão funcional do MVP seguindo exatamente a identidade visual definida neste prompt.
