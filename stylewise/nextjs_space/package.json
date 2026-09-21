@@ -123,7 +123,7 @@
   "engines": {
     "node": ">=20.9.0"
   },
-  "resolutions": {
+  "overrides": {
     "motion-dom": "12.23.12",
     "motion-utils": "12.23.6"
   }
