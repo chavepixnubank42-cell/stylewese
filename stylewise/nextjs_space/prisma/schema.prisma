@@ -1,0 +1,183 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/stylewise/nextjs_space/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String?
+  password      String
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  wardrobeItems WardrobeItem[]
+  outfits       Outfit[]
+  favorites     Favorite[]
+  preferences   UserPreference?
+  history       History[]
+  ratings       OutfitRating[]
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model UserPreference {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  styles         String[]
+  favoriteColors String[]
+  avoidColors    String[]
+  occasions      String[]
+  location       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("user_preferences")
+}
+
+model WardrobeItem {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  imageUrl        String
+  cloudStoragePath String?
+  isPublic        Boolean  @default(false)
+  category        String
+  color           String
+  pattern         String?
+  style           String?
+  brand           String?
+  season          String?
+  aiAnalysis      Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  outfitItems     OutfitItem[]
+
+  @@index([userId, category])
+  @@map("wardrobe_items")
+}
+
+model Outfit {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String?
+  occasion    String?
+  style       String?
+  explanation String?
+  weather     Json?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  items       OutfitItem[]
+  favorites   Favorite[]
+  ratings     OutfitRating[]
+
+  @@index([userId])
+  @@map("outfits")
+}
+
+model OutfitItem {
+  id             String       @id @default(uuid())
+  outfitId       String
+  outfit         Outfit       @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  wardrobeItemId String
+  wardrobeItem   WardrobeItem @relation(fields: [wardrobeItemId], references: [id], onDelete: Cascade)
+  order          Int
+
+  @@unique([outfitId, wardrobeItemId])
+  @@map("outfit_items")
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outfitId  String
+  outfit    Outfit   @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, outfitId])
+  @@map("favorites")
+}
+
+model OutfitRating {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outfitId  String
+  outfit    Outfit   @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  liked     Boolean
+  createdAt DateTime @default(now())
+
+  @@unique([userId, outfitId])
+  @@map("outfit_ratings")
+}
+
+model History {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  data      Json
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("history")
+}
+
+model Trend {
+  id          String   @id @default(uuid())
+  name        String
+  category    String
+  description String?
+  imageUrl    String?
+  status      String
+  evolution   Json
+  sources     String[]
+  lastUpdated DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category, status])
+  @@map("trends")
+}
