@@ -24,9 +24,11 @@ export const metadata: Metadata = {
   title: "STYLEWISE — Seu estilo. Sua inteligência.",
   description:
     "Personal stylist digital com IA. Organize seu guarda-roupa, receba análises de looks e descubra combinações inteligentes.",
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
+    apple: "/icons/icon-192.png",
   },
   openGraph: {
     title: "STYLEWISE — Seu estilo. Sua inteligência.",
