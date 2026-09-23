@@ -48,9 +48,9 @@ export function HomeClient({ userName }: { userName: string | null }) {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-8 text-center"
       >
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex items-center justify-center gap-2 mb-1">
           <Sparkles className="w-5 h-5 text-[#C8A96B]" />
           <span className="text-xs font-semibold uppercase tracking-wider text-[#C8A96B]">STYLEWISE</span>
         </div>
