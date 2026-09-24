@@ -9,6 +9,7 @@ import { ScoreBar } from "@/components/score-bar";
 import { toast } from "sonner";
 import Link from "next/link";
 import type { LookAnalysis } from "@/lib/types";
+import { upload } from "@vercel/blob/client";
 
 export function AnalyzeClient() {
   const [step, setStep] = useState<"upload" | "analyzing" | "result">("upload");
@@ -20,20 +21,11 @@ export function AnalyzeClient() {
     if (!file) return;
     setStep("analyzing");
     try {
-      const presRes = await fetch("/api/upload/presigned", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileName: file.name, contentType: file.type, isPublic: false }),
+      const blob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
       });
-      const { uploadUrl, cloud_storage_path } = await presRes.json();
-      await fetch(uploadUrl, { method: "PUT", headers: { "Content-Type": file.type }, body: file });
-
-      const urlRes = await fetch("/api/wardrobe/file-url", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cloudStoragePath: cloud_storage_path, contentType: file.type, isPublic: false }),
-      });
-      const { url: imageUrl } = await urlRes.json();
+      const imageUrl = blob.url;
 
       const response = await fetch("/api/analyze-look", {
         method: "POST",
