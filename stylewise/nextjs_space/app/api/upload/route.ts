@@ -21,9 +21,6 @@ export async function POST(request: Request): Promise<NextResponse> {
           addRandomSuffix: true,
         };
       },
-      onUploadCompleted: async () => {
-        // Nada extra necessário aqui — o client recebe a URL final direto.
-      },
     });
 
     return NextResponse.json(jsonResponse);
