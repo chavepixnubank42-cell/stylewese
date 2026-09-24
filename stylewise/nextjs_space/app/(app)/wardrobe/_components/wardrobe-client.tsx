@@ -9,6 +9,7 @@ import { LoadingAnalysis } from "@/components/loading-analysis";
 import { CATEGORIES } from "@/lib/types";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { upload } from "@vercel/blob/client";
 
 export function WardrobeClient() {
   const [items, setItems] = useState<any[]>([]);
@@ -41,25 +42,11 @@ export function WardrobeClient() {
     if (!selectedFile || !previewUrl) return;
     setAddStep("analyzing");
     try {
-      const presignedRes = await fetch("/api/upload/presigned", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileName: selectedFile.name, contentType: selectedFile.type, isPublic: false }),
+      const blob = await upload(selectedFile.name, selectedFile, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
       });
-      const { uploadUrl, cloud_storage_path } = await presignedRes.json();
-
-      await fetch(uploadUrl, {
-        method: "PUT",
-        headers: { "Content-Type": selectedFile.type },
-        body: selectedFile,
-      });
-
-      const fileUrlRes = await fetch("/api/wardrobe/file-url", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cloudStoragePath: cloud_storage_path, contentType: selectedFile.type, isPublic: false }),
-      });
-      const { url: imageUrl } = await fileUrlRes.json();
+      const imageUrl = blob.url;
 
       const analyzeRes = await fetch("/api/wardrobe/analyze", {
         method: "POST",
@@ -68,7 +55,7 @@ export function WardrobeClient() {
       });
       const aiAnalysis = await analyzeRes.json();
 
-      setAnalysis({ ...aiAnalysis, imageUrl, cloudStoragePath: cloud_storage_path });
+      setAnalysis({ ...aiAnalysis, imageUrl, cloudStoragePath: blob.pathname });
       setAddStep("result");
     } catch (err) {
       console.error(err);
