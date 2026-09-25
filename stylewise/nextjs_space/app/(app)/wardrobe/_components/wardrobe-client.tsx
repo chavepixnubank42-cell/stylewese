@@ -11,6 +11,25 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { upload } from "@vercel/blob/client";
 
+function normalizeCategory(s: string | null | undefined): string {
+  return (s ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+// Compara duas categorias tolerando maiúscula/minúscula, acentos e
+// singular/plural (ex: "jaqueta" bate com "Jaquetas").
+function categoryMatches(itemCategory: string | null | undefined, filterCategory: string): boolean {
+  const a = normalizeCategory(itemCategory);
+  const b = normalizeCategory(filterCategory);
+  if (!a || !b) return false;
+  if (a === b) return true;
+  if (a.includes(b) || b.includes(a)) return true;
+  return a.slice(0, 5) === b.slice(0, 5);
+}
+
 export function WardrobeClient() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -108,7 +127,7 @@ export function WardrobeClient() {
   };
 
   const filtered = (items ?? []).filter((i: any) => {
-    const matchFilter = filter === "Todas" || i?.category === filter;
+    const matchFilter = filter === "Todas" || categoryMatches(i?.category, filter);
     const matchSearch = !search || (i?.category ?? "").toLowerCase().includes(search.toLowerCase()) || (i?.color ?? "").toLowerCase().includes(search.toLowerCase());
     return matchFilter && matchSearch;
   });
