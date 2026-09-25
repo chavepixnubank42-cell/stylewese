@@ -1,90 +1,111 @@
 export const dynamic = "force-dynamic";
-export const maxDuration = 300; // se o build da Vercel reclamar deste valor, troque por 60
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 
-const SOURCE = "Google Trends (via Apify)";
-const MIN_HOURS_BETWEEN_RUNS = 24;
+/**
+ * Lista curada de tendências de moda. Sem IA, sem serviço externo, sem custo.
+ * Edite esta lista quando quiser atualizar o Radar: mude o "status", ajuste
+ * os números de "scores" (0 a 100, 6 pontos = últimos 6 meses) ou adicione
+ * novas tendências. Depois é só abrir /api/trends/generate de novo.
+ *
+ * status possíveis: "crescendo" | "consolidada" | "estavel" | "perdendo"
+ * category deve ser uma das categorias do app (veja lib/types.ts)
+ */
+const CURATED_TRENDS = [
+  {
+    name: "Calça wide leg",
+    category: "Calças",
+    status: "crescendo",
+    description: "Corte largo e fluido ganhando força sobre o skinny, especialmente em jeans e alfaiataria.",
+    scores: [45, 52, 58, 66, 74, 82],
+  },
+  {
+    name: "Vestido midi",
+    category: "Vestidos",
+    status: "consolidada",
+    description: "Comprimento na altura da canela segue como escolha segura para trabalho e encontros.",
+    scores: [70, 74, 76, 78, 80, 81],
+  },
+  {
+    name: "Blazer oversized",
+    category: "Casacos",
+    status: "consolidada",
+    description: "Ombros soltos e caimento largo continuam dominando looks de trabalho descontraído.",
+    scores: [72, 75, 77, 78, 79, 80],
+  },
+  {
+    name: "Jaqueta jeans",
+    category: "Jaquetas",
+    status: "estavel",
+    description: "Peça curinga que se mantém popular ano a ano, sem grandes picos ou quedas.",
+    scores: [60, 62, 59, 61, 60, 62],
+  },
+  {
+    name: "Tênis branco minimalista",
+    category: "Tênis",
+    status: "consolidada",
+    description: "Modelos limpos, sem muito detalhe, seguem como base de guarda-roupa versátil.",
+    scores: [75, 76, 78, 79, 80, 82],
+  },
+  {
+    name: "Sandália rasteira",
+    category: "Sandálias",
+    status: "crescendo",
+    description: "Rasteirinhas voltam com força, puxadas por releituras de marcas de luxo e streetwear.",
+    scores: [30, 38, 47, 55, 64, 71],
+  },
+  {
+    name: "Bolsa transversal pequena",
+    category: "Bolsas",
+    status: "crescendo",
+    description: "Formato compacto e prático ganha espaço sobre bolsas grandes no dia a dia.",
+    scores: [40, 46, 53, 60, 67, 73],
+  },
+  {
+    name: "Saia longa plissada",
+    category: "Saias",
+    status: "crescendo",
+    description: "Plissados alongados aparecem cada vez mais em looks casuais e de trabalho.",
+    scores: [35, 41, 48, 56, 63, 69],
+  },
+  {
+    name: "Camiseta oversized",
+    category: "Camisetas",
+    status: "consolidada",
+    description: "Caimento largo segue como padrão em básicos, do streetwear ao casual chique.",
+    scores: [68, 70, 72, 73, 74, 75],
+  },
+  {
+    name: "Casaco puffer",
+    category: "Casacos",
+    status: "perdendo",
+    description: "Depois do pico do inverno, a procura por casacos acolchoados tende a cair na entressafra.",
+    scores: [78, 74, 68, 60, 52, 44],
+  },
+  {
+    name: "Calça cargo",
+    category: "Calças",
+    status: "perdendo",
+    description: "Depois de anos em alta, o modelo com bolsos utilitários começa a perder espaço para cortes mais retos.",
+    scores: [80, 76, 71, 65, 58, 51],
+  },
+  {
+    name: "Colete alfaiataria",
+    category: "Blusas",
+    status: "estavel",
+    description: "Coletes estruturados seguem como opção de camada, sem grande variação de interesse.",
+    scores: [50, 52, 49, 51, 50, 52],
+  },
+] as const;
 
-// Termos de moda acompanhados no Google Trends (Brasil). Edite à vontade.
-// term = o que é pesquisado no Google | name = como aparece no Radar
-// category precisa ser uma das categorias do app (lib/types.ts)
-const TERMS = [
-  { term: "calça cargo", name: "Calça cargo", category: "Calças" },
-  { term: "calça wide leg", name: "Calça wide leg", category: "Calças" },
-  { term: "vestido midi", name: "Vestido midi", category: "Vestidos" },
-  { term: "saia longa", name: "Saia longa", category: "Saias" },
-  { term: "camiseta oversized", name: "Camiseta oversized", category: "Camisetas" },
-  { term: "blazer oversized", name: "Blazer oversized", category: "Casacos" },
-  { term: "jaqueta jeans", name: "Jaqueta jeans", category: "Jaquetas" },
-  { term: "tênis branco", name: "Tênis branco", category: "Tênis" },
-  { term: "sandália rasteira", name: "Sandália rasteira", category: "Sandálias" },
-  { term: "bolsa transversal", name: "Bolsa transversal", category: "Bolsas" },
-];
-
-type Pt = { t: number; v: number };
-
-const norm = (s: string) =>
-  s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-
-// Lê a resposta do Apify aceitando os formatos mais comuns de "interesse ao longo do tempo"
-function collectSeries(items: any[]): Map<string, Pt[]> {
-  const map = new Map<string, Pt[]>();
-
-  const add = (term: any, t: number, v: any) => {
-    const key = typeof term === "string" ? norm(term) : "";
-    const val = Number(Array.isArray(v) ? v[0] : v);
-    if (!key || !Number.isFinite(t) || !Number.isFinite(val)) return;
-    if (!map.has(key)) map.set(key, []);
-    map.get(key)!.push({ t, v: val });
-  };
-
-  for (const item of items ?? []) {
-    const term = item?.searchTerm ?? item?.inputUrlOrTerm ?? item?.keyword ?? item?.term;
-
-    if (Array.isArray(item?.interestOverTime_timelineData)) {
-      for (const p of item.interestOverTime_timelineData) {
-        add(term, Number(p?.time) * 1000, p?.value);
-      }
-    } else if (Array.isArray(item?.interestOverTime)) {
-      for (const p of item.interestOverTime) {
-        add(term, p?.time ? Number(p.time) * 1000 : Date.parse(p?.date), p?.value);
-      }
-    } else if (item?.value !== undefined && (item?.time || item?.date)) {
-      add(term, item.time ? Number(item.time) * 1000 : Date.parse(item.date), item.value);
-    }
-  }
-
-  for (const pts of map.values()) pts.sort((a, b) => a.t - b.t);
-  return map;
-}
-
-// Reduz a série (ex.: 52 semanas) para no máximo 12 pontos, tirando a média de cada bloco
-function downsample(pts: Pt[], n = 12): Pt[] {
-  if (pts.length <= n) return pts;
-  const size = pts.length / n;
-  const out: Pt[] = [];
-  for (let i = 0; i < n; i++) {
-    const slice = pts.slice(Math.floor(i * size), Math.floor((i + 1) * size));
-    if (slice.length === 0) continue;
-    const avg = slice.reduce((s, p) => s + p.v, 0) / slice.length;
-    out.push({ t: slice[slice.length - 1].t, v: avg });
-  }
-  return out;
-}
-
-// Compara os 3 últimos pontos com os 3 anteriores
-function computeStatus(pts: Pt[]): string {
-  if (pts.length < 6) return "estavel";
-  const avg = (a: Pt[]) => a.reduce((s, p) => s + p.v, 0) / a.length;
-  const recent = avg(pts.slice(-3));
-  const before = avg(pts.slice(-6, -3));
-  const change = before > 0 ? (recent - before) / before : recent > 0 ? 1 : 0;
-  if (change >= 0.15) return "crescendo";
-  if (change <= -0.15) return "perdendo";
-  if (recent >= 60) return "consolidada";
-  return "estavel";
+function buildEvolution(scores: readonly number[]) {
+  const now = new Date();
+  return scores.map((score, i) => {
+    const d = new Date(now);
+    d.setMonth(now.getMonth() - (scores.length - 1 - i));
+    return { date: d.toISOString(), score: Math.max(0, Math.min(100, Math.round(score))) };
+  });
 }
 
 export async function GET(request: NextRequest) {
@@ -100,108 +121,33 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  const token = process.env.APIFY_TOKEN;
-  if (!token) {
-    return NextResponse.json(
-      { error: "APIFY_TOKEN não está configurado na Vercel" },
-      { status: 500 }
-    );
-  }
-
   try {
-    // Evita gastar créditos do Apify à toa: só busca de novo depois de 24h
-    const latest = await prisma.trend.findFirst({
-      where: { sources: { has: SOURCE } },
-      orderBy: { lastUpdated: "desc" },
-    });
-    if (latest) {
-      const hours = (Date.now() - latest.lastUpdated.getTime()) / 3600000;
-      if (hours < MIN_HOURS_BETWEEN_RUNS) {
-        return NextResponse.json({
-          ok: true,
-          skipped: true,
-          message: `Tendências atualizadas há ${Math.round(hours)}h. Nova busca só depois de ${MIN_HOURS_BETWEEN_RUNS}h.`,
-        });
-      }
-    }
+    let created = 0;
+    let updated = 0;
 
-    const response = await fetch(
-      "https://api.apify.com/v2/acts/apify~google-trends-scraper/run-sync-get-dataset-items",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          searchTerms: TERMS.map((t) => t.term),
-          geo: "BR",
-          timeRange: "today 12-m",
-          isMultiple: false,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error("Trends Apify error:", response.status, errText);
-      return NextResponse.json(
-        { error: "Erro ao consultar o Apify", status: response.status },
-        { status: 502 }
-      );
-    }
-
-    const raw = await response.json();
-    const items: any[] = Array.isArray(raw) ? raw : [];
-    const series = collectSeries(items);
-
-    let saved = 0;
-    const missing: string[] = [];
-
-    for (const t of TERMS) {
-      const pts = series.get(norm(t.term));
-      if (!pts || pts.length < 2) {
-        missing.push(t.term);
-        continue;
-      }
-
-      const ds = downsample(pts);
+    for (const t of CURATED_TRENDS) {
       const values = {
         category: t.category,
-        description: `Interesse de busca no Google Brasil por "${t.term}" nos últimos 12 meses.`,
-        status: computeStatus(ds),
-        evolution: ds.map((p) => ({
-          date: new Date(p.t).toISOString(),
-          score: Math.max(0, Math.min(100, Math.round(p.v))),
-        })),
-        sources: [SOURCE],
+        description: t.description,
+        status: t.status,
+        evolution: buildEvolution(t.scores),
+        sources: ["Curadoria StyleWise"],
         lastUpdated: new Date(),
       };
 
       const existing = await prisma.trend.findFirst({ where: { name: t.name } });
       if (existing) {
         await prisma.trend.update({ where: { id: existing.id }, data: values });
+        updated++;
       } else {
         await prisma.trend.create({ data: { name: t.name, ...values } });
+        created++;
       }
-      saved++;
     }
 
-    if (saved === 0) {
-      // Ajuda a descobrir se o formato da resposta do Apify mudou
-      return NextResponse.json(
-        {
-          error: "Nenhum dado utilizável veio do Apify",
-          itemsReceived: items.length,
-          sampleKeys: Object.keys(items[0] ?? {}),
-        },
-        { status: 502 }
-      );
-    }
-
-    return NextResponse.json({ ok: true, saved, missing });
+    return NextResponse.json({ ok: true, created, updated, total: CURATED_TRENDS.length });
   } catch (error: any) {
-    console.error("Trends generate error:", error);
+    console.error("Trends seed error:", error);
     return NextResponse.json({ error: "Erro" }, { status: 500 });
   }
 }
