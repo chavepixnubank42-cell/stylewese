@@ -2,6 +2,8 @@ export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 
+const MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
@@ -12,14 +14,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "imageUrl obrigatório" }, { status: 400 });
     }
 
-    const response = await fetch("https://apps.abacus.ai/v1/chat/completions", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.ABACUSAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-5.4-mini",
+        model: MODEL,
         messages: [
           {
             role: "system",
@@ -47,7 +49,7 @@ Responda em JSON puro sem markdown:
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error("AI analyze error:", errText);
+      console.error("Groq analyze error:", errText);
       return NextResponse.json({ error: "Erro na análise da IA" }, { status: 502 });
     }
 
