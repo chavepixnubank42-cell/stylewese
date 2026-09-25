@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 
-const MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+const MODEL = "qwen/qwen3.8-27b";
 
 export async function POST(request: NextRequest) {
   const session = await auth();
