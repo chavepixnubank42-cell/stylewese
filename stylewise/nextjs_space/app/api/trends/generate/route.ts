@@ -145,7 +145,20 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ ok: true, created, updated, total: CURATED_TRENDS.length });
+    // Remove tendências antigas (de tentativas anteriores com IA/Apify) que
+    // não fazem mais parte da lista curada acima.
+    const curatedNames = CURATED_TRENDS.map((t) => t.name);
+    const removed = await prisma.trend.deleteMany({
+      where: { name: { notIn: curatedNames } },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      created,
+      updated,
+      removed: removed.count,
+      total: CURATED_TRENDS.length,
+    });
   } catch (error: any) {
     console.error("Trends seed error:", error);
     return NextResponse.json({ error: "Erro" }, { status: 500 });
