@@ -3,6 +3,8 @@ import { NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 
+const MODEL = "llama-3.3-70b-versatile";
+
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
@@ -66,14 +68,14 @@ Responda em JSON:
 {"outfits":[{"name":"Nome do look","itemIds":["id1","id2","id3"],"explanation":"Explicação detalhada de por que esta combinação funciona","occasion":"...","style":"..."}]}`;
     }
 
-    const response = await fetch("https://apps.abacus.ai/v1/chat/completions", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.ABACUSAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-5.4-mini",
+        model: MODEL,
         messages: [
           {
             role: "system",
