@@ -3,6 +3,8 @@ import { NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 
+const MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
@@ -15,14 +17,14 @@ export async function POST(request: NextRequest) {
       return new Response(JSON.stringify({ error: "imageUrl obrigatório" }), { status: 400 });
     }
 
-    const response = await fetch("https://apps.abacus.ai/v1/chat/completions", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.ABACUSAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-5.4-mini",
+        model: MODEL,
         messages: [
           {
             role: "system",
@@ -52,7 +54,7 @@ Seja específico e útil. Responda em JSON puro:
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error("Look analyze error:", errText);
+      console.error("Groq look analyze error:", errText);
       return new Response(JSON.stringify({ error: "Erro na análise da IA" }), { status: 502 });
     }
 
