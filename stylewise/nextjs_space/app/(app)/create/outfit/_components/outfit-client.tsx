@@ -8,6 +8,7 @@ import { OCCASIONS, STYLES } from "@/lib/types";
 import { toast } from "sonner";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { OutfitView } from "@/components/outfit-view";
 
 export function OutfitClient() {
   const [items, setItems] = useState<any[]>([]);
@@ -211,13 +212,7 @@ export function OutfitClient() {
               className="bg-card rounded-2xl p-5 shadow-sm"
             >
               <h3 className="font-semibold text-sm mb-3">{outfit?.name ?? `Look ${idx + 1}`}</h3>
-              <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
-                {(outfit?.items ?? []).map((oi: any) => (
-                  <div key={oi?.id} className="w-16 h-20 rounded-lg overflow-hidden bg-muted shrink-0">
-                    <img src={oi?.wardrobeItem?.imageUrl ?? ""} alt={oi?.wardrobeItem?.category ?? ""} className="w-full h-full object-cover" />
-                  </div>
-                ))}
-              </div>
+              <OutfitView items={outfit?.items ?? []} />
               {outfit?.explanation && (
                 <p className="text-xs text-muted-foreground mb-3">{outfit.explanation}</p>
               )}

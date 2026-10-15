@@ -1,4 +1,5 @@
 "use client";
+import { OutfitView } from "@/components/outfit-view";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Heart, Trash2 } from "lucide-react";
@@ -74,13 +75,7 @@ export function FavoritesClient() {
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-1">
-                  {(outfit?.items ?? []).map((oi: any) => (
-                    <div key={oi?.id} className="w-16 h-20 rounded-lg overflow-hidden bg-muted shrink-0">
-                      <img src={oi?.wardrobeItem?.imageUrl ?? ""} alt={oi?.wardrobeItem?.category ?? ""} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
+                <OutfitView items={outfit?.items ?? []} />
                 {outfit?.explanation && (
                   <p className="text-xs text-muted-foreground mt-3 line-clamp-2">{outfit.explanation}</p>
                 )}

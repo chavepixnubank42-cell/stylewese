@@ -9,6 +9,7 @@ import { OCCASIONS } from "@/lib/types";
 import { toast } from "sonner";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { OutfitView } from "@/components/outfit-view";
 
 export function OccasionClient() {
   const [occasion, setOccasion] = useState("");
@@ -130,13 +131,7 @@ export function OccasionClient() {
           {(outfits ?? []).map((outfit: any, idx: number) => (
             <motion.div key={outfit?.id ?? idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-card rounded-2xl p-5 shadow-sm">
               <h3 className="font-semibold text-sm mb-3">{outfit?.name ?? `Look ${idx + 1}`}</h3>
-              <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
-                {(outfit?.items ?? []).map((oi: any) => (
-                  <div key={oi?.id} className="w-16 h-20 rounded-lg overflow-hidden bg-muted shrink-0">
-                    <img src={oi?.wardrobeItem?.imageUrl ?? ""} alt="" className="w-full h-full object-cover" />
-                  </div>
-                ))}
-              </div>
+              <OutfitView items={outfit?.items ?? []} />
               {outfit?.explanation && <p className="text-xs text-muted-foreground mb-3">{outfit.explanation}</p>}
               <div className="flex gap-2">
                 <button onClick={() => handleRate(outfit?.id, true)} className={cn("px-3 py-1.5 rounded-full text-xs font-medium transition-colors", outfit?.rating === true ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground")}><ThumbsUp className="w-3.5 h-3.5" /></button>
