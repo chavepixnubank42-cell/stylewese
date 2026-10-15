@@ -3,7 +3,9 @@ import { NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 
-const MODEL = "llama-3.3-70b-versatile";
+// llama-3.3-70b-versatile foi desativado pela Groq em 16/08/2026.
+// Pode ser trocado sem alterar o código, via variável GROQ_MODEL na Vercel.
+const MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
 
 export async function POST(request: NextRequest) {
   const session = await auth();
@@ -89,7 +91,8 @@ Responda em JSON:
           { role: "user", content: prompt },
         ],
         response_format: { type: "json_object" },
-        max_tokens: 2000,
+        reasoning_effort: "low",
+        max_tokens: 4000,
         stream: true,
       }),
     });
