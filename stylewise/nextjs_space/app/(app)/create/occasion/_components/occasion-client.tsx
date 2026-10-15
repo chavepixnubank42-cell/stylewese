@@ -26,6 +26,10 @@ export function OccasionClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ occasion: occ, mode: "occasion" }),
       });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error || "Erro ao gerar looks");
+      }
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
       let partialRead = "";
@@ -38,19 +42,21 @@ export function OccasionClient() {
         partialRead = lines.pop() ?? "";
         for (const line of lines) {
           if (line.startsWith("data: ")) {
-            try {
-              const parsed = JSON.parse(line.slice(6));
-              if (parsed?.status === "completed") {
-                setOutfits(parsed?.result?.outfits ?? []);
-                setStep("results");
-                return;
-              } else if (parsed?.status === "error") throw new Error();
-            } catch {}
+            let parsed: any = null;
+            try { parsed = JSON.parse(line.slice(6)); } catch { continue; }
+            if (parsed?.status === "completed") {
+              setOutfits(parsed?.result?.outfits ?? []);
+              setStep("results");
+              return;
+            } else if (parsed?.status === "error") {
+              throw new Error(parsed?.message || "Erro ao gerar looks");
+            }
           }
         }
       }
-    } catch {
-      toast.error("Erro ao gerar looks");
+      throw new Error("Resposta incompleta da IA");
+    } catch (e: any) {
+      toast.error(e?.message || "Erro ao gerar looks");
       setStep("input");
     }
   };

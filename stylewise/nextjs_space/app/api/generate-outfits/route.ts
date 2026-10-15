@@ -11,6 +11,11 @@ export async function POST(request: NextRequest) {
     return new Response(JSON.stringify({ error: "Não autorizado" }), { status: 401 });
   }
 
+  if (!process.env.GROQ_API_KEY) {
+    console.error("GROQ_API_KEY não configurada");
+    return new Response(JSON.stringify({ error: "Chave GROQ_API_KEY não configurada no servidor" }), { status: 500 });
+  }
+
   try {
     const { baseItemId, occasion, style, weather, mode } = await request.json();
 
@@ -102,75 +107,85 @@ Responda em JSON:
 
     const stream = new ReadableStream({
       async start(controller) {
+        const send = (obj: any) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(obj)}\n\n`));
+
+        const finalize = async () => {
+          let aiResult: any;
+          try { aiResult = JSON.parse(buffer); } catch {
+            console.error("JSON inválido da IA:", buffer.slice(0, 500));
+            aiResult = { outfits: [] };
+          }
+
+          const savedOutfits = [];
+          for (const outfit of (aiResult?.outfits ?? [])) {
+            const validIds = Array.from(new Set<string>(
+              (outfit?.itemIds ?? []).filter((id: string) => items?.some((i: any) => i?.id === id))
+            ));
+            if (validIds.length < 1) continue;
+
+            const saved = await prisma.outfit.create({
+              data: {
+                userId: session.user?.id as string,
+                name: outfit?.name ?? "Look sugerido",
+                occasion: outfit?.occasion ?? occasion ?? null,
+                style: outfit?.style ?? style ?? null,
+                explanation: outfit?.explanation ?? null,
+                // Json? no Prisma não aceita `null` direto: usar undefined
+                weather: weather ?? undefined,
+                items: {
+                  create: validIds.map((id: string, idx: number) => ({
+                    wardrobeItemId: id,
+                    order: idx + 1,
+                  })),
+                },
+              },
+              include: { items: { include: { wardrobeItem: true }, orderBy: { order: "asc" } } },
+            });
+            savedOutfits.push(saved);
+          }
+
+          if (savedOutfits.length === 0) {
+            send({ status: "error", message: "A IA não conseguiu montar looks. Tente novamente." });
+            return;
+          }
+
+          await prisma.history.create({
+            data: {
+              userId: session.user?.id as string,
+              type: mode === "occasion" ? "occasion_outfits" : "outfit_generated",
+              data: { count: savedOutfits.length, occasion: occasion ?? null, style: style ?? null },
+            },
+          }).catch(() => {});
+
+          send({ status: "completed", result: { outfits: savedOutfits } });
+        };
+
         try {
-          if (!reader) { controller.close(); return; }
-          while (true) {
+          if (!reader) { send({ status: "error", message: "Sem resposta da IA" }); controller.close(); return; }
+          let finished = false;
+          while (!finished) {
             const { done, value } = await reader.read();
             if (done) break;
             partialRead += decoder.decode(value, { stream: true });
             const lines = partialRead.split("\n");
             partialRead = lines.pop() ?? "";
             for (const line of lines) {
-              if (line.startsWith("data: ")) {
-                const d = line.slice(6);
-                if (d === "[DONE]") {
-                  let aiResult;
-                  try { aiResult = JSON.parse(buffer); } catch { aiResult = { outfits: [] }; }
-
-                  const savedOutfits = [];
-                  for (const outfit of (aiResult?.outfits ?? [])) {
-                    const validIds = (outfit?.itemIds ?? []).filter((id: string) =>
-                      items?.some((i: any) => i?.id === id)
-                    );
-                    if (validIds.length < 1) continue;
-
-                    const saved = await prisma.outfit.create({
-                      data: {
-                        userId: session.user?.id as string,
-                        name: outfit?.name ?? "Look sugerido",
-                        occasion: outfit?.occasion ?? occasion ?? null,
-                        style: outfit?.style ?? style ?? null,
-                        explanation: outfit?.explanation ?? null,
-                        weather: weather ?? null,
-                        items: {
-                          create: validIds.map((id: string, idx: number) => ({
-                            wardrobeItemId: id,
-                            order: idx + 1,
-                          })),
-                        },
-                      },
-                      include: { items: { include: { wardrobeItem: true }, orderBy: { order: "asc" } } },
-                    });
-                    savedOutfits.push(saved);
-                  }
-
-                  await prisma.history.create({
-                    data: {
-                      userId: session.user?.id as string,
-                      type: mode === "occasion" ? "occasion_outfits" : "outfit_generated",
-                      data: { count: savedOutfits.length, occasion, style },
-                    },
-                  }).catch(() => {});
-
-                  const finalData = JSON.stringify({ status: "completed", result: { outfits: savedOutfits } });
-                  controller.enqueue(encoder.encode(`data: ${finalData}\n\n`));
-                  controller.close();
-                  return;
-                }
-                try {
-                  const parsed = JSON.parse(d);
-                  buffer += parsed?.choices?.[0]?.delta?.content ?? "";
-                  const progress = JSON.stringify({ status: "processing", message: "Criando combinações..." });
-                  controller.enqueue(encoder.encode(`data: ${progress}\n\n`));
-                } catch {}
-              }
+              if (!line.startsWith("data: ")) continue;
+              const d = line.slice(6).trim();
+              if (d === "[DONE]") { finished = true; break; }
+              try {
+                const parsed = JSON.parse(d);
+                buffer += parsed?.choices?.[0]?.delta?.content ?? "";
+                send({ status: "processing", message: "Criando combinações..." });
+              } catch {}
             }
           }
+          // Finaliza mesmo se o stream fechar sem [DONE]
+          await finalize();
           controller.close();
         } catch (err) {
           console.error("Stream error:", err);
-          const errData = JSON.stringify({ status: "error", message: "Erro ao gerar looks" });
-          controller.enqueue(encoder.encode(`data: ${errData}\n\n`));
+          try { send({ status: "error", message: "Erro ao gerar looks" }); } catch {}
           controller.close();
         }
       },
